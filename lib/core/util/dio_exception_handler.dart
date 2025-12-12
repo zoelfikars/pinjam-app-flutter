@@ -6,5 +6,5 @@ Exception dioExceptionHandler(DioException e, String defaultMessage) {
   if (e.response != null) {
     return handleGoLangBodyResponse(e.response!);
   }
-  return ServerException(message: e.message ?? defaultMessage);
+  return ServerException(message: e.response?.data['message'] ?? defaultMessage);
 }

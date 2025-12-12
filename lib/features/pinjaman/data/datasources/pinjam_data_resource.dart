@@ -39,14 +39,15 @@ class PinjamanRemoteDataSourceImpl implements PinjamanRemoteDataSource {
   @override
   Future<String> ajukanPinjaman({required AjukanPinjamanParams params}) async {
     try {
+      final param = {
+        'nik': params.nik,
+        'no_telepon': params.noTelepon,
+        'alamat': params.alamat,
+        'jumlah_pinjaman': params.jumlahPinjaman.toInt(),
+      };
       final response = await dio.post(
         AppUrl.ajukanPinjamanEndpoint,
-        data: {
-          'nik': params.nik,
-          'no_telepon': params.noTelepon,
-          'alamat': params.alamat,
-          'jumlah_pinjaman': params.jumlahPinjaman,
-        },
+        data: param,
       );
       if (!AppConstant.successStatusCodes.contains(response.statusCode)) {
         throw handleGoLangBodyResponse(response);
@@ -112,7 +113,6 @@ class PinjamanRemoteDataSourceImpl implements PinjamanRemoteDataSource {
   @override
   Future<String> updatePinjamanStatus(UpdatePinjamanParams params) async {
     try {
-      debugPrint('params : $params');
       final response = await dio.put(
         AppUrl.approvalPinjamanEndpoint.replaceAll('{id}', params.pinjamanId),
         data: {
@@ -121,7 +121,6 @@ class PinjamanRemoteDataSourceImpl implements PinjamanRemoteDataSource {
             'catatan_admin': params.catatanAdmin,
         },
       );
-      debugPrint('response : $response');
 
       final responseModel = getStandardResponse<void>(response);
 
@@ -131,7 +130,6 @@ class PinjamanRemoteDataSourceImpl implements PinjamanRemoteDataSource {
 
       return responseModel.message;
     } on DioException catch (e) {
-      debugPrint('error : ${e.response?.data}');
       if (e.response != null) {
         handleGoLangBodyResponse(e.response!);
       }

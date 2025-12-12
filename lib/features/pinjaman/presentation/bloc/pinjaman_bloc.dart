@@ -47,7 +47,7 @@ class PinjamanBloc extends Bloc<PinjamanEvent, PinjamanState> {
                 'Pengajuan pinjaman berhasil diajukan. Menunggu persetujuan admin.',
           ),
         );
-        add(const PinjamanEvent.fetchListAdminRequested());
+        add(const PinjamanEvent.fetchListRequested());
       },
     );
   }

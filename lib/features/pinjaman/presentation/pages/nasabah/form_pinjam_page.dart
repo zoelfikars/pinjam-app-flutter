@@ -38,7 +38,7 @@ class _FormPinjamPageState extends State<FormPinjamPage> {
 
   void _formatLoanAmount(String text) {
     if (text.isEmpty) return;
-    String cleanText = text.replaceAll('.', '');
+    String cleanText = text.replaceAll(RegExp(r'\.|Rp '), '');
     int? value = int.tryParse(cleanText);
     if (value != null) {
       String newText = AppConstant.numberFormat.format(value).trim();
@@ -54,8 +54,9 @@ class _FormPinjamPageState extends State<FormPinjamPage> {
   void _submit() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      final rawJumlahText = _jumlahController.text.replaceAll('.', '');
-      final rawJumlahInt = int.tryParse(rawJumlahText) ?? 0;
+      final rawJumlahText = _jumlahController.text;
+      String cleanText = rawJumlahText.replaceAll(RegExp(r'\.|Rp '), '');
+      final rawJumlahInt = int.tryParse(cleanText) ?? 0;
       context.read<PinjamanBloc>().add(
         PinjamanEvent.submissionRequested(
           nik: _nik,
@@ -207,7 +208,7 @@ class _FormPinjamPageState extends State<FormPinjamPage> {
                       return InputValidator.validateField(
                         value?.replaceAll(RegExp(r'[.Rp ]'), ''),
                         AppStrings.labelLoanAmount,
-                        ['required', 'numeric', 'min:1000000'],
+                        ['required', 'numeric', 'gte:1000000'],
                       );
                     },
                   ),

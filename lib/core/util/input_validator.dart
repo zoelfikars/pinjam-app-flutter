@@ -9,6 +9,8 @@ class InputValidator {
     'regex': (value, fieldName, arg) => _validateRegex(value, fieldName, arg!),
     'numeric': (value, fieldName, [arg]) => _validateNumeric(value, fieldName),
     'nik': (value, fieldName, [arg]) => _validateNikFormat(value, fieldName),
+    'gte': (value, fieldName, arg) =>
+        _validateGreaterThanEqual(value, fieldName, arg!),
     'phone': (value, fieldName, [arg]) =>
         _validatePhoneFormat(value, fieldName),
     'confirmed': (value, fieldName, arg) =>
@@ -61,7 +63,6 @@ class InputValidator {
   }
 
   static String? _validateNumeric(String value, String fieldName) {
-    debugPrint('value : $value');
     if (int.tryParse(value) == null) {
       return '$fieldName harus berupa angka.';
     }
@@ -114,6 +115,17 @@ class InputValidator {
   ) {
     if (value != mainPassword) {
       return 'Konfirmasi password tidak cocok.';
+    }
+    return null;
+  }
+
+  static String? _validateGreaterThanEqual(
+    String value,
+    String fieldName,
+    String arg,
+  ) {
+    if (int.parse(value) < int.parse(arg)) {
+      return '$fieldName harus lebih besar atau sama dengan $arg.';
     }
     return null;
   }

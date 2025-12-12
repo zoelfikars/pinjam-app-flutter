@@ -96,12 +96,6 @@ class _ListPinjamPagePageState extends State<ListPinjamPagePage> {
                   context,
                 ).showSnackBar(SnackBar(content: Text(message)));
               },
-              submissionSuccess: (message) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(message)));
-                _onRefresh();
-              },
             );
           },
           builder: (context, state) {
